@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sample FirebaseUI App</title>
+    <script src="https://www.gstatic.com/firebasejs/3.7.3/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBSIhsR0zeRhxtcoeQ2VNSkrvkfIJNCDbA",
+        authDomain: "fir-start-d7288.firebaseapp.com",
+        databaseURL: "https://fir-start-d7288.firebaseio.com",
+        storageBucket: "fir-start-d7288.appspot.com",
+        messagingSenderId: "612732237175"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script type="text/javascript">
+      initApp = function() {
+        firebase.auth().onAuthStateChanged(function(user) {
+          if (user) {
+            // User is signed in.
+            var displayName = user.displayName;
+            var email = user.email;
+            var emailVerified = user.emailVerified;
+            var photoURL = user.photoURL;
+            var uid = user.uid;
+            var providerData = user.providerData;
+            var dbRef = firebase.database().ref().child('site');
+            dbRef.on('value', function(snapshot) {
+              document.getElementById('sitename').innerText = snapshot.val().name;
+            });
+          } else {
+            // User is signed out.
+            location.href='/index.html';
+          }
+        }, function(error) {
+          console.log(error);
+        });
+      };
+
+      window.addEventListener('load', function() {
+        initApp()
+      });
+    </script>
+  </head>
+  <body>
+    <h1>That's my app</h1>
+    <div id="sitename"></div>
+  </body>
+</html>
